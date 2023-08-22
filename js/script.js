@@ -6,17 +6,19 @@ const totalPriceEl = document.querySelector("#totalPrice");
 const clearCartEl = document.getElementById("clear");
 
 
+
 const url = "./products.json";
+let products;
 
-fetch(url)
-.then(res => res.json())
-.then(data => {
+  fetch(url)
+  .then((res) => res.json())
+  .then((data) => {
     console.log(data);
-    renderProducts(data)
-})
+    renderProducts(data);
+  });
 
+function renderProducts(products) {
 
-function renderProducts(products){
   products.forEach((product) => {
     let productBox = document.createElement("div");
     productBox.innerHTML = `
@@ -30,30 +32,29 @@ function renderProducts(products){
     productsEl.appendChild(productBox);
   });
 
-
-    let btnAdd = document.querySelectorAll(".tiny");
-    btnAdd.forEach((btn) => {
-      btnAdd.onclick = () => addToCart(product.id);
-      btnAdd.addEventListener("click", () => {
-        if (product.stock <= 0) {
-          alert("This product is out of stock.");
-          return;
-        }
-        Toastify({
-          text: "Added product!",
-          duration: 2000,
-          gravity: "center",
-          position: "right",
-          style: {
-            background: "linear-gradient(to right, #5bce51 ,  #bcedb8  ",
-          },
-        }).showToast();
-      });
+  let btnAddList = document.querySelectorAll(".tiny");
+  btnAddList.forEach((btnAdd, index) => {
+    btnAdd.addEventListener("click", () => {
+      const product = products[index];
+      if (product.stock <= 0) {
+        alert("This product is out of stock.");
+        return;
+      }
+      Toastify({
+        text: "Added product!",
+        duration: 2000,
+        gravity: "center",
+        position: "right",
+        style: {
+          background: "linear-gradient(to right, #5bce51 ,  #bcedb8  ",
+        },
+      }).showToast();
     });
 
-    let btnEliminate = productBox.querySelector(".eliminate");
-    btnEliminate.forEach((btn) => {
+    let btnEliminateList = document.querySelectorAll(".eliminate");
+    btnEliminateList.forEach((btnEliminate) => {
       btnEliminate.addEventListener("click", () => {
+        const product = products[index];
         eliminateFromCart(product.id);
         Toastify({
           text: "Item eliminated",
@@ -66,17 +67,8 @@ function renderProducts(products){
         }).showToast();
       });
     });
+  });
 }
-
-
-
-
-
-
-
-// setInterval(() => {
-//   Swal.fire("take advantage of 10% discount");
-// }, 2000);
 
 // array cart
 let cart;

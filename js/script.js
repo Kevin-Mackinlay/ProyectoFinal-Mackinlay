@@ -6,11 +6,14 @@ const totalPriceEl = document.querySelector("#totalPrice");
 const clearCartEl = document.getElementById("clear");
 
 
-const url = "../products.json";
+const url = "./products.json";
 
 fetch(url)
 .then(res => res.json())
-.then(data => renderProducts(data))
+.then(data => {
+    console.log(data);
+    renderProducts(data)
+})
 
 
 function renderProducts(products){
@@ -28,7 +31,7 @@ function renderProducts(products){
   });
 
 
-    let btnAdd = productBox.querySelector(".tiny");
+    let btnAdd = document.querySelectorAll(".tiny");
     btnAdd.forEach((btn) => {
       btnAdd.onclick = () => addToCart(product.id);
       btnAdd.addEventListener("click", () => {
@@ -65,7 +68,7 @@ function renderProducts(products){
     });
 }
 
-renderProducts();
+
 
 
 

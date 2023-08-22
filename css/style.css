@@ -1,0 +1,36 @@
+nav {
+  margin-bottom: 1em !important;
+}
+
+.cart {
+  box-shadow: 0 0 5px #ddd;
+  padding: 20px;
+}
+
+.tiny {
+  background-color: rgba(208, 115, 28, 0.896) !important;
+  border-radius: 4px;
+}
+
+a {
+  color: rgb(219, 130, 7) !important;
+}
+/* 
+.tiny2 {
+  display: flex;
+  justify-content: left;
+  text-align: left;
+  background-color: #dd4343 !important;
+margin: auto;
+  color: white;
+
+  font-size: 11px;
+  border-radius: 4px;
+  width: 90px;
+  height: 30px;
+  margin-top: 20px;
+} */
+
+.tiny .eliminate {
+  background-color: red !important;
+}

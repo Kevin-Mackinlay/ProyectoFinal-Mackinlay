@@ -36,25 +36,24 @@ function renderProducts(products) {
     productsEl.appendChild(productBox);
   
 
-    let btnAddList = document.createElement("button");
-    
-    btnAddList.addEventListener("click", () => {
-     
-      Toastify({
-        text: "Added product!",
-        duration: 2000,
-        gravity: "center",
-        position: "right",
-        style: {
-          background: "linear-gradient(to right, #5bce51 ,  #bcedb8  ",
-        },
-      }).showToast();
-    });
+   const btnAdd = productBox.querySelector(".btn-success");
+   btnAdd.addEventListener("click", () => {
+     addToCart(product.id);
+     Toastify({
+       text: "Added product!",
+       duration: 2000,
+       gravity: "center",
+       position: "right",
+       style: {
+         background: "linear-gradient(to right, #5bce51 ,  #bcedb8",
+       },
+     }).showToast();
+   });
 
-    let btnEliminateList = document.createElement("button");
-
-    btnEliminateList.addEventListener("click", (event) => {
-  
+    const btnEliminate = productBox.querySelector(".btn-danger");
+    btnEliminate.addEventListener("click", (event) => {
+      event.stopPropagation();
+      eliminateFromCart(product.id);
       Toastify({
         text: "Item eliminated",
         duration: 2000,
@@ -65,10 +64,11 @@ function renderProducts(products) {
         },
       }).showToast();
     });
-  
   });
- 
-};
+}
+
+
+
 
 // array cart
 let cart;
@@ -79,8 +79,9 @@ if (localStorage.getItem("cart") === null) {
   cart = JSON.parse(localStorage.getItem("cart"));
 }
 
-const eliminateFromCart = (product) => {
-  cart = cart.filter((item) => item.id !== id);
+const eliminateFromCart = (productId) => {
+
+  cart = cart.filter((item) => item.id !== productId);
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCart();
   renderProducts(products);
@@ -106,7 +107,7 @@ const updateCart = () => {
 };
 
 const addToCart = (id) => {
-  let products;
+ 
   console.log("addToCart called");
   const item = products.find((product) => product.id === id);
   console.log("Item stock:", item.stock);

@@ -4,6 +4,7 @@ const cartItemEl = document.querySelector(".cart");
 const subtotalEl = document.querySelector(".subtotal");
 const totalPriceEl = document.querySelector("#totalPrice");
 const clearCartEl = document.getElementById("clear");
+// const buttonsEl = document.querySelector(".button")
 
 let products = [];
 
@@ -29,20 +30,16 @@ function renderProducts(products) {
             <img src=${product.imgSrc} alt=${product.name} />
             <h3>${product.name}</h3>
             <input type="text" class="count" value="${product.stock}" />
-            <button class="tiny" ${product.stock <= 0 ? "disabled" : ""}>Add to cart</button>
-            <button class="tiny id= "eliminate">Eliminate</button>
+           <button type="button" class="btn btn-success">Agregar</button>
+           <button type="button" class="btn btn-danger">Eliminar</button>
           </div>`;
     productsEl.appendChild(productBox);
-  });
+  
 
-  let btnAddList = document.querySelectorAll(".tiny");
-  btnAddList.forEach((btnAdd, index) => {
-    btnAdd.addEventListener("click", () => {
-      const product = products[index];
-      // if (product.stock <= 0) {
-      //   alert("This product is out of stock.");
-      //   return;
-      // }
+    let btnAddList = document.createElement("button");
+    
+    btnAddList.addEventListener("click", () => {
+     
       Toastify({
         text: "Added product!",
         duration: 2000,
@@ -53,22 +50,11 @@ function renderProducts(products) {
         },
       }).showToast();
     });
-  });
 
-  let btnEliminateList = document.querySelectorAll("#eliminate");
-  btnEliminateList.forEach((btnEliminate) => {
-    btnEliminate.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const productBox = event.currentTarget.closest(".product");
-      const productId = productBox.getAttribute("data-id");
+    let btnEliminateList = document.createElement("button");
 
-      const product = products.find((prod) => prod.id === parseInt(productId));
-      if (!product) {
-        console.error("Product not found.");
-        return;
-      }
-
-      eliminateFromCart(product);
+    btnEliminateList.addEventListener("click", (event) => {
+  
       Toastify({
         text: "Item eliminated",
         duration: 2000,
@@ -79,12 +65,10 @@ function renderProducts(products) {
         },
       }).showToast();
     });
+  
   });
-
-  // .catch((error) => {
-  //       console.error("Error fetching products:", error);
-  //     });
-}
+ 
+};
 
 // array cart
 let cart;

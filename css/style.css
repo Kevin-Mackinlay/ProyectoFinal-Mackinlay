@@ -16,3 +16,15 @@ a {
   color: rgb(219, 130, 7) !important;
 }
 
+.btn-primary{
+  background-color: rgb(82, 169, 53);
+  border-color: rgb(101, 169, 53);
+}
+
+.btn-danger{
+  background-color: rgb(230, 75, 75);
+}
+
+.btn-primary:hover{
+ background-color:rgb(82, 169, 53);
+}

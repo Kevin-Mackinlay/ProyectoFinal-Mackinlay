@@ -4,7 +4,7 @@ const cartItemEl = document.querySelector(".cart");
 const subtotalEl = document.querySelector(".subtotal");
 const totalPriceEl = document.querySelector("#totalPrice");
 const clearCartEl = document.getElementById("clear");
-// const buttonsEl = document.querySelector(".button")
+const checkoutButton = document.getElementById("checkoutButton");
 
 let products = [];
 
@@ -29,26 +29,25 @@ function renderProducts(products) {
           <div class="product medium-4 columns" data-name=${product.name} data-price=${product.price} data-id=${product.id}>
             <img src=${product.imgSrc} alt=${product.name} />
             <h3>${product.name}</h3>
-            <input type="text" class="count" value="${product.stock}" />
+            <p>${product.stock} </p>
            <button type="button" class="btn btn-success">Agregar</button>
            <button type="button" class="btn btn-danger">Eliminar</button>
           </div>`;
     productsEl.appendChild(productBox);
-  
 
-   const btnAdd = productBox.querySelector(".btn-success");
-   btnAdd.addEventListener("click", () => {
-     addToCart(product.id);
-     Toastify({
-       text: "Added product!",
-       duration: 2000,
-       gravity: "center",
-       position: "right",
-       style: {
-         background: "linear-gradient(to right, #5bce51 ,  #bcedb8",
-       },
-     }).showToast();
-   });
+    const btnAdd = productBox.querySelector(".btn-success");
+    btnAdd.addEventListener("click", () => {
+      addToCart(product.id);
+      Toastify({
+        text: "Added product!",
+        duration: 2000,
+        gravity: "center",
+        position: "right",
+        style: {
+          background: "linear-gradient(to right, #5bce51 ,  #bcedb8",
+        },
+      }).showToast();
+    });
 
     const btnEliminate = productBox.querySelector(".btn-danger");
     btnEliminate.addEventListener("click", (event) => {
@@ -67,9 +66,6 @@ function renderProducts(products) {
   });
 }
 
-
-
-
 // array cart
 let cart;
 
@@ -80,26 +76,25 @@ if (localStorage.getItem("cart") === null) {
 }
 
 const eliminateFromCart = (productId) => {
-
   cart = cart.filter((item) => item.id !== productId);
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCart();
-  renderProducts(products);
+  // renderProducts(products);
 };
 
-// const countRemainingStock = () => {
-//   products.forEach((product) => {
-//     let remainingStock = product.stock;
+const countRemainingStock = () => {
+  products.forEach((product) => {
+    let remainingStock = product.stock;
 
-//     cart.forEach((item) => {
-//       if (item.id === product.id) {
-//         remainingStock -= item.numberOfUnits;
-//       }
-//     });
+    cart.forEach((item) => {
+      if (item.id === product.id) {
+        remainingStock -= item.numberOfUnits;
+      }
+    });
 
-//     product.remainingStock = remainingStock;
-//   });
-// };
+    product.remainingStock = remainingStock;
+  });
+};
 
 const updateCart = () => {
   //   countRemainingStock();
@@ -107,12 +102,16 @@ const updateCart = () => {
 };
 
 const addToCart = (id) => {
- 
   console.log("addToCart called");
   const item = products.find((product) => product.id === id);
   console.log("Item stock:", item.stock);
   if (item.stock <= 0) {
-    alert("this product is out of stock.");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "we do not have anymore stock",
+    
+    });
   } else {
     cart.push({
       ...item,
@@ -121,8 +120,8 @@ const addToCart = (id) => {
     localStorage.setItem("cart", JSON.stringify(cart));
     console.log("Cart updated:", cart);
   }
-  updateCart();
-  //   countRemainingStock();
+  item.stock -= 1;
+  renderProducts(products);
 };
 
 const clearCart = () => {
@@ -143,3 +142,21 @@ const renderTotalPrice = () => {
 };
 
 renderTotalPrice();
+
+
+
+const checkOutCart = (productId) => {
+let total = 0;
+cart.forEach((item) => {
+  total += item.price * item.numberOfUnits;
+});
+Swal.fire({
+  title:"Checkout",
+  text: `Your total is $${total}`,
+  icon: "info",
+  confirmText: "OK",
+
+});
+}
+
+checkoutButton.addEventListener("click", checkOutCart);

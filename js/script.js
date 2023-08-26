@@ -30,12 +30,12 @@ function renderProducts(products) {
             <img src=${product.imgSrc} alt=${product.name} />
             <h3>${product.name}</h3>
             <p>${product.stock} </p>
-           <button type="button" class="btn btn-success">Agregar</button>
-           <button type="button" class="btn btn-danger">Eliminar</button>
+           <button type="button" class="btn btn-one">Agregar</button>
+           <button type="button" class="btn btn-two">Eliminar</button>
           </div>`;
     productsEl.appendChild(productBox);
 
-    const btnAdd = productBox.querySelector(".btn-success");
+    const btnAdd = productBox.querySelector(".btn-one");
     btnAdd.addEventListener("click", () => {
       addToCart(product.id);
       Toastify({
@@ -49,7 +49,7 @@ function renderProducts(products) {
       }).showToast();
     });
 
-    const btnEliminate = productBox.querySelector(".btn-danger");
+    const btnEliminate = productBox.querySelector(".btn-two");
     btnEliminate.addEventListener("click", (event) => {
       event.stopPropagation();
       eliminateFromCart(product.id);
@@ -122,6 +122,7 @@ const addToCart = (id) => {
   }
   item.stock -= 1;
   renderProducts(products);
+  renderTotalPrice();
 };
 
 const clearCart = () => {

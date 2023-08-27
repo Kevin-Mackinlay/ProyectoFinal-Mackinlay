@@ -17,6 +17,11 @@ h1 {
   font-weight: normal;
 }
 
+h5{
+  font-weight: normal;
+  color:  rgba(208, 115, 28, 0.896);
+}
+
 a {
   color: rgb(219, 130, 7) !important;
 }

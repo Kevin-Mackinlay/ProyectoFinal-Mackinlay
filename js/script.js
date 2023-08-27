@@ -5,6 +5,7 @@ const subtotalEl = document.querySelector(".subtotal");
 const totalPriceEl = document.querySelector("#totalPrice");
 const clearCartEl = document.getElementById("clear");
 const checkoutButton = document.getElementById("checkoutButton");
+const itemInCartEl = document.getElementById("itemInCart");
 
 let products = [];
 
@@ -50,9 +51,10 @@ function renderProducts(products) {
     });
 
     const btnEliminate = productBox.querySelector(".btn-two");
-    btnEliminate.addEventListener("click", (event) => {
-      event.stopPropagation();
-      eliminateFromCart(product.id);
+    btnEliminate.addEventListener("click", () => {
+      // event.stopPropagation();
+      const cartItemId = product.id;
+      eliminateFromCart(cartItemId);
       Toastify({
         text: "Item eliminated",
         duration: 2000,
@@ -75,10 +77,11 @@ if (localStorage.getItem("cart") === null) {
   cart = JSON.parse(localStorage.getItem("cart"));
 }
 
-const eliminateFromCart = (productId) => {
-  cart = cart.filter((item) => item.id !== productId);
+const eliminateFromCart = (cartItemId) => {
+  cart = cart.filter((item) => item.id !== cartItemId);
   localStorage.setItem("cart", JSON.stringify(cart));
   updateCart();
+  updateCartItemsDisplay();
   // renderProducts(products);
 };
 
@@ -101,6 +104,17 @@ const updateCart = () => {
   renderTotalPrice();
 };
 
+const updateCartItemsDisplay = () => {
+  itemInCartEl.innerHTML = "";
+
+  cart.forEach((item) => {
+    // const { name, price  } = product;
+    const itemInCart = document.createElement("div");
+    itemInCart.innerHTML = `<h5> ${item.name} -  $${item.price.toFixed(2)}</h5>  `;
+    itemInCartEl.appendChild(itemInCart);
+  });
+};
+
 const addToCart = (id) => {
   console.log("addToCart called");
   const item = products.find((product) => product.id === id);
@@ -110,7 +124,6 @@ const addToCart = (id) => {
       icon: "error",
       title: "Oops...",
       text: "we do not have anymore stock",
-    
     });
   } else {
     cart.push({
@@ -121,13 +134,15 @@ const addToCart = (id) => {
     console.log("Cart updated:", cart);
   }
   item.stock -= 1;
-  renderProducts(products);
+  updateCartItemsDisplay();
+  // renderProducts(products);
   renderTotalPrice();
 };
 
 const clearCart = () => {
   cart = [];
   localStorage.removeItem("cart");
+  itemInCartEl.innerHTML = "";
   renderTotalPrice();
 };
 clearCartEl.addEventListener("click", clearCart);
@@ -144,20 +159,17 @@ const renderTotalPrice = () => {
 
 renderTotalPrice();
 
-
-
 const checkOutCart = (productId) => {
-let total = 0;
-cart.forEach((item) => {
-  total += item.price * item.numberOfUnits;
-});
-Swal.fire({
-  title:"Checkout",
-  text: `Your total is $${total}`,
-  icon: "info",
-  confirmText: "OK",
-
-});
-}
+  let total = 0;
+  cart.forEach((item) => {
+    total += item.price * item.numberOfUnits;
+  });
+  Swal.fire({
+    title: "Checkout",
+    text: `Your total is $${total}`,
+    icon: "info",
+    confirmText: "OK",
+  });
+};
 
 checkoutButton.addEventListener("click", checkOutCart);

@@ -10,6 +10,7 @@ nav {
 .tiny {
   background-color: rgba(208, 115, 28, 0.896) !important;
   border-radius: 4px;
+  box-shadow: 3px 3px;
 }
 
 h1 {
@@ -21,20 +22,21 @@ a {
 }
 
 .btn-one {
-  background-color: rgba(148, 205, 91, 0.638);
- 
+  background-color: rgba(208, 115, 28, 0.896) ;
+box-shadow: 3px 3px ;
 }
 
 .btn-two {
-  background-color: rgb(205, 111, 111);
+  background-color: rgb(203, 59, 59) ;
+  box-shadow: 3px 3px;
 }
 
 .btn-one:hover {
-  background-color: rgb(144, 188, 130);
+  background-color: rgb(230, 178, 111);
 }
 
 .btn-two:hover {
-  background-color: rgb(149, 84, 60);
+  background-color: rgb(216, 124, 124) ;
 }
 p {
   font-weight: bold;
